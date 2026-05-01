@@ -1,0 +1,9 @@
+[project]
+name = "iaqualink-mcp"
+version = "0.1.0"
+description = "MCP server for Jandy iAquaLink pool/spa control"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp[cli]>=1.7.0",
+    "iaqualink>=0.6.0",
+]
