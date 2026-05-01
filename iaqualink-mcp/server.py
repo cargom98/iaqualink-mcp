@@ -557,4 +557,9 @@ async def boost_aquapure(ctx: Context) -> str:
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    mcp.run()
+    import sys
+
+    if "--http" in sys.argv:
+        mcp.run(transport="streamable-http")
+    else:
+        mcp.run()

@@ -73,14 +73,25 @@ If you don't need AquaPure control, you can skip this — all other tools work w
 
 ## Running the Server
 
+The server supports two transport modes:
+
 ```bash
 cd iaqualink-mcp
+
+# stdio transport (default — for Kiro, Claude Desktop, local MCP clients)
 uv run python server.py
+
+# Streamable HTTP transport (for web clients, remote access, multi-client)
+uv run python server.py --http
 ```
 
-## Adding to Kiro
+HTTP mode starts a server at `http://127.0.0.1:8000/mcp` by default.
 
-Add this to your `.kiro/settings/mcp.json`:
+## MCP Client Configuration
+
+### Kiro (stdio)
+
+Add this to `.kiro/settings/mcp.json`:
 
 ```json
 {
@@ -96,9 +107,7 @@ Add this to your `.kiro/settings/mcp.json`:
 }
 ```
 
-The server reads credentials from the `.env` file automatically — no need to put them in the MCP config.
-
-## Adding to Claude Desktop
+### Claude Desktop (stdio)
 
 Add this to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
 
@@ -113,6 +122,30 @@ Add this to your Claude Desktop config (`~/Library/Application Support/Claude/cl
   }
 }
 ```
+
+### Streamable HTTP (any MCP client)
+
+First start the server in HTTP mode:
+
+```bash
+uv run python server.py --http
+```
+
+Then point your MCP client to the endpoint:
+
+```json
+{
+  "mcpServers": {
+    "iaqualink": {
+      "url": "http://127.0.0.1:8000/mcp"
+    }
+  }
+}
+```
+
+This works with any MCP client that supports Streamable HTTP transport, including remote clients on the same network (change `host` to `0.0.0.0` in `server.py` to listen on all interfaces).
+
+The server reads credentials from the `.env` file automatically — no need to put secrets in the MCP config.
 
 ## Example Prompts
 
